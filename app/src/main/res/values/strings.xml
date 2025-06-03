@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TiAjuda</string>
+    <string-array name="tipos_usuario">
+        <item>Cliente</item>
+        <item>Técnico</item>
+    </string-array>
+</resources>
