@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp">
+
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Nome do Cliente -->
+        <TextView
+            android:id="@+id/textNomeCliente"
+            android:text="Cliente: Fulano da Silva"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Título do Serviço -->
+        <TextView
+            android:id="@+id/textTituloServico"
+            android:text="Serviço: Instalação de Rede"
+            android:textStyle="italic"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Valor -->
+        <TextView
+            android:id="@+id/textValor"
+            android:text="R$ 0,00"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"/>
+
+        <!-- Observação -->
+        <TextView
+            android:id="@+id/textObservacao"
+            android:text="Observação: Exemplo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"/>
+
+        <!-- Status -->
+        <TextView
+            android:id="@+id/textStatus"
+            android:text="Status: Pendente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_blue_dark"
+            android:layout_marginTop="2dp" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

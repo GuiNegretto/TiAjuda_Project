@@ -5,39 +5,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import com.br.ucs.tiajudaandroid.R;
-import com.br.ucs.tiajudaandroid.storage.UserStorage;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends Activity {
-    EditText editEmail, editSenha;
-    Button btnEntrar;
-    TextView linkCadastro;
+import com.br.ucs.tiajudaandroid.R;
+import com.br.ucs.tiajudaandroid.utils.SessionManager;
+
+public class MainActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle b) {
-        super.onCreate(b);
-        setContentView(R.layout.activity_login);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        editEmail = findViewById(R.id.emailLogin);
-        editSenha = findViewById(R.id.senhaLogin);
-        btnEntrar = findViewById(R.id.btnEntrar);
-        linkCadastro = findViewById(R.id.linkCadastro);
+        SessionManager sessionManager = new SessionManager(getApplicationContext());
 
-        btnEntrar.setOnClickListener(v -> {
-            String email = editEmail.getText().toString();
-            String senha = editSenha.getText().toString();
+    if (sessionManager.isLoggedIn()) {
+        // Usuário já está logado, vai direto para a tela de serviços
+        Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
+        startActivity(intent);
+    } else {
+        // Usuário não está logado, vai para a tela de login
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
 
-            if (UserStorage.validarLogin(email, senha)) {
-                Toast.makeText(this, "Login bem-sucedido!", Toast.LENGTH_SHORT).show();
-                // Aqui você pode redirecionar para outra tela
-                // startActivity(new Intent(this, TelaPrincipalActivity.class));
-            } else {
-                Toast.makeText(this, "Email ou senha inválidos.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        linkCadastro.setOnClickListener(v -> {
-            startActivity(new Intent(this, CadastroActivity.class));
-        });
+    finish();
     }
 }
