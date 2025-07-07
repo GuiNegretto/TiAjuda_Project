@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_detalhe"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="Detalhes do Atendimento" />
+
+    <ScrollView
+        android:layout_below="@id/toolbar_detalhe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textTituloServico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Título do Serviço"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/textDescricaoServico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Descrição"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/textCliente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cliente: Fulano"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/textData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Data: 2025-06-17"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/textStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Status: Em aberto"
+                android:layout_marginTop="8dp" />
+
+            <Button
+                android:id="@+id/buttonConcluir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Concluir Atendimento"
+                android:layout_marginTop="24dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <include layout="@layout/loading_overlay" />
+
+</RelativeLayout>

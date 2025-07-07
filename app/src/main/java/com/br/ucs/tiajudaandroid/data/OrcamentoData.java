@@ -58,11 +58,12 @@ public class OrcamentoData {
     new Thread(() -> {
             try {
                 Map<String, Object> requestBody = new HashMap<>();
-                requestBody.put("id_cliente", sessionManager.getUserId());
-                requestBody.put("titulo", orcamento.getValor());
-                requestBody.put("descricao", orcamento.getObservacao());
+                requestBody.put("id_tecnico", sessionManager.getUserId());
+                requestBody.put("valor", orcamento.getValor());
+                requestBody.put("observacao", orcamento.getObservacao());
+                requestBody.put("id_servico", orcamento.getIdServico());
 
-                String resposta = apiClient.requestApiSync(HttpMethod.POST, "orcamento", requestBody);
+                String resposta = apiClient.requestApiSync(HttpMethod.POST, "orcamentos", requestBody);
     
             if (callback != null) {
                 callback.onSuccess(resposta);
@@ -83,7 +84,27 @@ public static void alterarOrcamento(Context context, Orcamento orcamento, DataCa
                 requestBody.put("descricao", orcamento.getObservacao());
                 //requestBody.put("id_cliente", sessionManager.getUserId());
 
-                String resposta = apiClient.requestApiSync(HttpMethod.PUT, "servicos/" + orcamento.getId() , requestBody);
+                String resposta = apiClient.requestApiSync(HttpMethod.PUT, "orcamentos/" + orcamento.getId() , requestBody);
+    
+            if (callback != null) {
+                callback.onSuccess(resposta);
+            }
+        } catch (IOException e) {
+            if (callback != null) {
+                callback.onFailure(e);
+            }
+        }
+}).start();
+}
+
+public static void aprovarOrcamento(String formaPagamento, int id, DataCallback<String> callback) {
+    new Thread(() -> {
+            try {
+                Map<String, Object> requestBody = new HashMap<>();
+                requestBody.put("form_pag", formaPagamento);
+                //requestBody.put("id_cliente", sessionManager.getUserId());
+
+                String resposta = apiClient.requestApiSync(HttpMethod.PUT, "orcamentos/" + id + "/aprovado", requestBody);
     
             if (callback != null) {
                 callback.onSuccess(resposta);

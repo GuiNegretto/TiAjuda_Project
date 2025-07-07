@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardElevation="4dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="@color/card_default">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,37 +16,45 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Linha com título e botão -->
+        <TextView
+            android:id="@+id/textViewTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textStyle="bold"
+            tools:text="Manutenção de Computador" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/textViewTitulo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                tools:text="Manutenção de Computador" />
+            android:layout_marginTop="12dp"
+            android:gravity="end">
 
             <Button
                 android:id="@+id/buttonEditar"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Editar" />
+                android:layout_weight="1"
+                android:text="Editar"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/buttonAvaliar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Avaliar" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/textViewDescricao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:textAppearance="?attr/textAppearanceBody2"
             tools:text="Descrição detalhada do serviço a ser realizado, incluindo troca de peças e limpeza." />
 
-        <!-- Novo campo: ID do Serviço -->
         <TextView
             android:id="@+id/textViewIdServico"
             android:layout_width="match_parent"
@@ -54,7 +63,6 @@
             android:textAppearance="?attr/textAppearanceBody2"
             tools:text="ID do Serviço: 123" />
 
-        <!-- Novo campo: Status -->
         <TextView
             android:id="@+id/textViewStatus"
             android:layout_width="match_parent"
@@ -73,5 +81,4 @@
             tools:text="Cadastrado em: 2025-06-09" />
 
     </LinearLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>

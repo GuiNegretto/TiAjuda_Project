@@ -48,6 +48,28 @@ public class ServicoData {
         }
 }).start();
   }
+  
+  public static void buscarServicosTecnico(Context context, DataCallback<List<Servico>> callback) {
+    SessionManager sessionManager = new SessionManager(context);
+
+  new Thread(() -> {
+    try {
+
+        String resposta = apiClient.requestApiSync(HttpMethod.GET , "servicos/atendimento/" + sessionManager.getUserId() );
+
+        Type listType = new TypeToken<List<Servico>>() {}.getType();
+        List<Servico> servicos = gson.fromJson(resposta, listType);
+
+        if (callback != null) {
+            callback.onSuccess(servicos);
+        }
+    } catch (IOException e) {
+        if (callback != null) {
+            callback.onFailure(e);
+        }
+    }
+}).start();
+}
 
   public static void adicionarServico(Context context, Servico servico, DataCallback<String> callback) {
     SessionManager sessionManager = new SessionManager(context);
@@ -91,6 +113,12 @@ public static void alterarServico(Context context, Servico servico, DataCallback
             }
         }
 }).start();
+}
+
+public static void marcarComoConcluido(Context context, long idServico, DataCallback<String> callback) {
+    // Aqui você faria a chamada de API real
+    // Simulação:
+    return;
 }
 
     

@@ -25,7 +25,7 @@ public class UserData {
                         requestBody.put("nome", usuario.getNome());
                         requestBody.put("email", usuario.getEmail());
                         requestBody.put("senha", usuario.getSenha());
-                        requestBody.put("tipo", usuario.getSenha());
+                        requestBody.put("tipo", usuario.getTipo());
 
                     String resposta = apiClient.requestApiSync(HttpMethod.POST, "usuarios", requestBody);
             

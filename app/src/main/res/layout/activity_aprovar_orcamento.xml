@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/textTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aprovação de Orçamento"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Valor total do orçamento -->
+        <TextView
+            android:id="@+id/textValorTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valor Total: R$ 0,00"
+            android:textSize="18sp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Forma de pagamento -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forma de Pagamento:"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupPagamento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radioPix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PIX" />
+
+            <RadioButton
+                android:id="@+id/radioCredito"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cartão de Crédito (1x)" />
+
+            <RadioButton
+                android:id="@+id/radioCreditoParcelado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cartão de Crédito (3x sem juros)" />
+
+            <RadioButton
+                android:id="@+id/radioDebito"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cartão de Débito" />
+
+            <RadioButton
+                android:id="@+id/radioBoleto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Boleto Bancário" />
+        </RadioGroup>
+
+        <!-- Botão Aprovar -->
+        <Button
+            android:id="@+id/btnAprovarPagamento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aprovar Pagamento"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:textColor="@android:color/white" />
+
+        <!-- Texto informativo -->
+        <TextView
+            android:id="@+id/textoEmailConfirmacao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Você receberá um e-mail com a confirmação do pagamento."
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
+</ScrollView>

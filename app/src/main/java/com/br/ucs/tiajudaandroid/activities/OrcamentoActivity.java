@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+import android.app.Application;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -20,6 +22,10 @@ import com.br.ucs.tiajudaandroid.R;
 import com.br.ucs.tiajudaandroid.model.Orcamento;
 import com.br.ucs.tiajudaandroid.adapters.OrcamentoAdapter;
 import com.br.ucs.tiajudaandroid.viewmodel.OrcamentoViewModel;
+import com.br.ucs.tiajudaandroid.utils.SessionManager;
+import com.br.ucs.tiajudaandroid.model.Usuario;
+
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -31,8 +37,11 @@ public class OrcamentoActivity extends AppCompatActivity {
     private FloatingActionButton fabAdicionarOrcamento;
     private OrcamentoViewModel orcamentoViewModel;
     private ActivityResultLauncher<Intent> cadastroOrcamentoLauncher;
+    private View loadingOverlay;
 
     private Orcamento orcamentoSelecionado;
+    private SessionManager sessionManager;
+    private Usuario usuarioExistente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +57,17 @@ public class OrcamentoActivity extends AppCompatActivity {
 
         recyclerViewOrcamentos = findViewById(R.id.recyclerViewOrcamentos);
         fabAdicionarOrcamento = findViewById(R.id.fabAdicionarOrcamento);
+        loadingOverlay = findViewById(R.id.loadingOverlay);
+
+
+        sessionManager = new SessionManager(getApplicationContext());
+        usuarioExistente = sessionManager.getUserDetails();
+
+
+        if("cliente".equals(usuarioExistente.getTipo()))
+            fabAdicionarOrcamento.setVisibility(View.GONE);
+        else
+            fabAdicionarOrcamento.setVisibility(View.VISIBLE);
 
         setupRecyclerView();
 
@@ -56,23 +76,31 @@ public class OrcamentoActivity extends AppCompatActivity {
         setupCadastroLauncher();
 
         observeViewModel();
-
+        
+        loadingOverlay.setVisibility(View.VISIBLE);
         orcamentoViewModel.fetchOrcamentosFromApi();
     }
 
     private void setupRecyclerView() {
-        orcamentoAdapter = new OrcamentoAdapter(new ArrayList<>());
+        orcamentoAdapter = new OrcamentoAdapter(new ArrayList<>(), OrcamentoActivity.this);
         recyclerViewOrcamentos.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewOrcamentos.setAdapter(orcamentoAdapter);
 
         orcamentoAdapter.setOnEditarClickListener(orcamento -> {
             Intent intent = new Intent(OrcamentoActivity.this, CadastroOrcamentoActivity.class);
             intent.putExtra("orcamento_id", orcamento.getId());
+            intent.putExtra("servico_id", orcamento.getIdServico());
             cadastroOrcamentoLauncher.launch(intent);
         });
 
         orcamentoAdapter.setOnItemClickListener(orcamento -> {
             orcamentoSelecionado = orcamento;
+        });
+
+        orcamentoAdapter.setOnAprovarClickListener(orcamento -> {
+                Intent intent = new Intent(OrcamentoActivity.this, AprovarOrcamentoActivity.class);
+                intent.putExtra("orcamento_id", orcamento.getId());
+                startActivity(intent);  // <- Corrigido aqui
         });
     }
 
@@ -93,18 +121,21 @@ public class OrcamentoActivity extends AppCompatActivity {
                 
                     Intent intent = new Intent(OrcamentoActivity.this, CadastroOrcamentoActivity.class);
                     intent.putExtra("orcamento_id", orcamentoSelecionado.getId());
+                    intent.putExtra("servico_id", orcamentoSelecionado.getIdServico());
                     cadastroOrcamentoLauncher.launch(intent);
                 });
     }
 
     private void observeViewModel() {
         orcamentoViewModel.getOrcamentos().observe(this, orcamentos -> {
+            loadingOverlay.setVisibility(View.GONE);
             if (orcamentos != null) {
                 orcamentoAdapter.setOrcamentos(orcamentos);
             }
         });
 
         orcamentoViewModel.getErro().observe(this, erro -> {
+            loadingOverlay.setVisibility(View.GONE);
             if (erro != null) {
                 Toast.makeText(this, erro, Toast.LENGTH_LONG).show();
             }

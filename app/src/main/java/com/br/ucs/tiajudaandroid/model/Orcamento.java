@@ -63,5 +63,9 @@ public class Orcamento {
         }
         return result;
      }
+     public String getStatusChar() { 
+        return status;
+     }
+     
     public void setStatus(String status) { this.status = status; }
 }

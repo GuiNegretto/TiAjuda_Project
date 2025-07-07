@@ -31,6 +31,16 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ServicoV
         this.editarClickListener = listener;
     }
 
+    public interface OnAvaliarClickListener {
+        void onAvaliarClick(Servico servico);
+    }
+    
+    private OnAvaliarClickListener avaliarClickListener;
+    
+    public void setOnAvaliarClickListener(OnAvaliarClickListener listener) {
+        this.avaliarClickListener = listener;
+    }
+
     public ServicoAdapter(List<Servico> listaServicos) {
         this.listaServicos = listaServicos;
         // 2. Guarda uma cópia da lista original
@@ -50,10 +60,21 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ServicoV
         holder.textViewTitulo.setText(servico.getTitulo());
         holder.textViewDescricao.setText(servico.getDescricao());
         holder.textViewData.setText("Cadastrado em " + servico.getDataCadastro());
+
+        //if("F".equals(servico.getStatus()))
+            holder.buttonAvaliar.setEnabled(true);     
+        //else
+        //    holder.buttonAvaliar.setEnabled(false);
         
         holder.buttonEditar.setOnClickListener(v -> {
             if (editarClickListener != null) {
                 editarClickListener.onEditarClick(servico);
+            }
+        });
+
+        holder.buttonAvaliar.setOnClickListener(v -> {
+            if (avaliarClickListener != null) {
+                avaliarClickListener.onAvaliarClick(servico);
             }
         });
     }
@@ -119,7 +140,7 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ServicoV
       TextView textViewData;
       TextView textViewIdServico;
       TextView textViewStatus;
-      Button buttonEditar;
+      Button buttonEditar, buttonAvaliar;
 
       // 2. Crie o construtor que recebe a View do item
       public ServicoViewHolder(@NonNull View itemView) {
@@ -133,6 +154,7 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ServicoV
           textViewIdServico = itemView.findViewById(R.id.textViewIdServico);
           textViewStatus = itemView.findViewById(R.id.textViewStatus);
           buttonEditar = itemView.findViewById(R.id.buttonEditar);
+          buttonAvaliar = itemView.findViewById(R.id.buttonAvaliar);
       }
   }
 }

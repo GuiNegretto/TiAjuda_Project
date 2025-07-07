@@ -7,9 +7,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.Filter;
-import android.widget.Filterable; // <-- Importante
+import android.widget.Filterable;
 import android.content.Context;
 import android.util.TypedValue;
+import android.widget.Button;
+
+import android.graphics.drawable.Drawable;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import android.content.res.ColorStateList;
+import androidx.cardview.widget.CardView;
+import android.graphics.Color;
 
 import com.br.ucs.tiajudaandroid.R;
 import com.br.ucs.tiajudaandroid.model.Orcamento;
@@ -22,11 +30,29 @@ public class OrcamentoAdapter extends RecyclerView.Adapter<OrcamentoAdapter.Orca
     private List<Orcamento> listaOrcamentos;
     private int posicaoSelecionada = RecyclerView.NO_POSITION;
     private List<Orcamento> listaOrcamentosCompleta;
+    private int colorSurface;
+    private int colorSelecionado;
 
-    public OrcamentoAdapter(List<Orcamento> listaOrcamentos) {
+    public interface OnAprovarClickListener {
+        void onAprovarClick(Orcamento orcamento);
+    }
+    
+    private OnAprovarClickListener onAprovarClickListener;
+    
+    public void setOnAprovarClickListener(OnAprovarClickListener listener) {
+        this.onAprovarClickListener = listener;
+    }
+    
+
+    public OrcamentoAdapter(List<Orcamento> listaOrcamentos, Context context) {
         this.listaOrcamentos = listaOrcamentos;
         // 2. Guarda uma cópia da lista original
         this.listaOrcamentosCompleta = new ArrayList<>(listaOrcamentos);
+
+        colorSurface = ContextCompat.getColor(context, R.color.card_default);
+
+        colorSelecionado = ContextCompat.getColor(context, R.color.itemSelecionado);
+
     }
 
     public void setOrcamentos(List<Orcamento> novosOrcamentos) {
@@ -46,23 +72,54 @@ public class OrcamentoAdapter extends RecyclerView.Adapter<OrcamentoAdapter.Orca
     @Override
     public void onBindViewHolder(@NonNull OrcamentoViewHolder holder, int position) {
         Orcamento orcamento = listaOrcamentos.get(position);
-        holder.textValor.setText("Valor R$ " + (orcamento.getStatus() == "C" ? "--" : orcamento.getValor()));
+        holder.textValor.setText("Valor R$ " + ("C".equals(orcamento.getStatus())  ? "--" : orcamento.getValor()));
         holder.textObservacao.setText(orcamento.getObservacao());
         holder.textNomeCliente.setText("Cliente: " + orcamento.getNomeCliente());
         holder.textTituloServico.setText("Serviço: " + orcamento.getTituloServico());
         holder.textStatus.setText("Status: " + orcamento.getStatus());
+        
+
+        switch(orcamento.getStatusChar())
+        {
+            case "A":
+            holder.btnAprovar.setText("Aprovado");
+            break;
+            case "R":
+            holder.btnAprovar.setText("Reprovado");
+            break;
+            case "F":
+            holder.btnAprovar.setText("Faturado");
+            break;
+            default: 
+            holder.btnAprovar.setText("Aprovar");
+            break;
+        }
     
-        // Aplica a cor de fundo conforme a seleção
         if (position == posicaoSelecionada) {
-            holder.itemView.setBackgroundColor(
-                holder.itemView.getContext().getResources().getColor(R.color.itemSelecionado) // use um recurso de cor
-            );
+            holder.cardView.setCardBackgroundColor(colorSelecionado);
         } else {
-        TypedValue typedValue = new TypedValue();
-        Context context = holder.itemView.getContext();
-        context.getTheme().resolveAttribute(android.R.attr.colorBackground, typedValue, true);
-        holder.itemView.setBackgroundColor(typedValue.data);
-    }
+            holder.cardView.setCardBackgroundColor(colorSurface);
+        }
+        
+
+         if("D".equals(orcamento.getStatusChar()))
+             holder.btnAprovar.setVisibility(View.VISIBLE);     
+         else
+             holder.btnAprovar.setVisibility(View.GONE);  
+
+        // if("D".equals(orcamento.getStatusChar()))
+        //     holder.btnAprovar.setEnabled(true);     
+        // else
+        //     holder.btnAprovar.setEnabled(false);
+
+
+
+        holder.btnAprovar.setOnClickListener(v -> {
+            if (onAprovarClickListener != null) {
+                onAprovarClickListener.onAprovarClick(orcamento);
+            }
+        });
+    
     
         holder.itemView.setOnClickListener(v -> {
             int posicaoAnterior = posicaoSelecionada;
@@ -146,6 +203,8 @@ public class OrcamentoAdapter extends RecyclerView.Adapter<OrcamentoAdapter.Orca
 
         static class OrcamentoViewHolder extends RecyclerView.ViewHolder {
             TextView textValor, textObservacao, textNomeCliente, textTituloServico, textStatus;
+            Button btnAprovar;
+            CardView cardView;
 
             public OrcamentoViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -154,6 +213,8 @@ public class OrcamentoAdapter extends RecyclerView.Adapter<OrcamentoAdapter.Orca
                 textNomeCliente = itemView.findViewById(R.id.textNomeCliente);
                 textTituloServico = itemView.findViewById(R.id.textTituloServico);
                 textStatus = itemView.findViewById(R.id.textStatus);
+                btnAprovar = itemView.findViewById(R.id.btnAprovar);
+                cardView = (CardView) itemView;
             }
         }
 

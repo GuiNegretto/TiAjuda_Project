@@ -2,6 +2,7 @@ package com.br.ucs.tiajudaandroid.activities;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ public class CadastroOrcamentoActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TextInputEditText editTextValor, editTextObservacao;
     private Button buttonSalvar;
+    private View loadingOverlay;
 
     private long idServicoVinculado;
 
@@ -38,14 +40,15 @@ public class CadastroOrcamentoActivity extends AppCompatActivity {
         editTextValor = findViewById(R.id.editTextValor);
         editTextObservacao = findViewById(R.id.editTextObservacao);
         buttonSalvar = findViewById(R.id.buttonSalvarOrcamento);
+        loadingOverlay = findViewById(R.id.loadingOverlay);
 
-        // Recupera o id do serviço enviado pela intent
-        // idServicoVinculado = getIntent().getLongExtra("servico_id", -1);
-        // if (idServicoVinculado == -1) {
-        //     Toast.makeText(this, "Serviço não informado!", Toast.LENGTH_SHORT).show();
-        //     finish();
-        //     return;
-        // }
+        //Recupera o id do serviço enviado pela intent
+        idServicoVinculado = getIntent().getLongExtra("servico_id", -1);
+        if (idServicoVinculado == -1) {
+            Toast.makeText(this, "Serviço não informado!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         buttonSalvar.setOnClickListener(v -> salvarOrcamento());
     }
@@ -58,15 +61,19 @@ public class CadastroOrcamentoActivity extends AppCompatActivity {
             editTextValor.setError("Valor obrigatório");
             return;
         }
+        loadingOverlay.setVisibility(View.VISIBLE);
 
         try {
             double valor = Double.parseDouble(valorTexto);
+
+   
 
             Orcamento novo = new Orcamento(0, valor, observacao, idServicoVinculado);
             OrcamentoData.adicionarOrcamento(this, novo, new DataCallback<String>() {
                 @Override
                 public void onSuccess(String resposta) {
                     runOnUiThread(() -> {
+                        loadingOverlay.setVisibility(View.GONE);
                         Toast.makeText(CadastroOrcamentoActivity.this, "Orçamento salvo!", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();
@@ -75,11 +82,16 @@ public class CadastroOrcamentoActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception e) {
-                    runOnUiThread(() -> Toast.makeText(CadastroOrcamentoActivity.this, "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    runOnUiThread(() -> {
+                        loadingOverlay.setVisibility(View.GONE);
+                        Toast.makeText(CadastroOrcamentoActivity.this, "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    });
                 }
             });
 
         } catch (NumberFormatException e) {
+            loadingOverlay.setVisibility(View.GONE);
             editTextValor.setError("Formato inválido");
         }
     }

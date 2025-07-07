@@ -2,6 +2,7 @@ package com.br.ucs.tiajudaandroid.activities; // Ou seu pacote de activities
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ public class CadastroServicoActivity extends AppCompatActivity {
     private Button buttonSalvar;
     private boolean modoEdicao = false;
     private long idServicoEditando = -1;
+    private View loadingOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class CadastroServicoActivity extends AppCompatActivity {
         editTextTitulo = findViewById(R.id.editTextTitulo);
         editTextDescricao = findViewById(R.id.editTextDescricao);
         buttonSalvar = findViewById(R.id.buttonSalvar);
+        loadingOverlay = findViewById(R.id.loadingOverlay);
         
         if (getIntent().hasExtra("servico_id")) {
             modoEdicao = true;
@@ -94,7 +97,7 @@ public class CadastroServicoActivity extends AppCompatActivity {
         // novoServico.setDescricao(descricao);
         // Seu ApiClient/ViewModel enviaria este objeto, que seria serializado
         // para um JSON como: { "titulo": "...", "descricao": "..." }
-
+        loadingOverlay.setVisibility(View.VISIBLE);
         if(idServicoEditando != -1){
             ServicoData.alterarServico(getApplication().getApplicationContext(), new Servico(idServicoEditando, titulo, descricao, 0, 0, null),
             new DataCallback<String>() {
@@ -102,6 +105,7 @@ public class CadastroServicoActivity extends AppCompatActivity {
                 public void onSuccess(String resposta) {
                     // Aqui você pode usar runOnUiThread() se precisar atualizar a UI
                     runOnUiThread(() -> {
+                        loadingOverlay.setVisibility(View.GONE);
                         Toast.makeText(CadastroServicoActivity.this, "Cadastro editado com sucesso!", Toast.LENGTH_SHORT).show();
                         // exibir resposta ou navegar
                         setResult(RESULT_OK);
@@ -113,6 +117,7 @@ public class CadastroServicoActivity extends AppCompatActivity {
                 public void onFailure(Exception e) {
                     e.printStackTrace();
                     runOnUiThread(() -> {
+                        loadingOverlay.setVisibility(View.GONE);
                         Toast.makeText(CadastroServicoActivity.this, "Erro ao salvar edição: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
                 }
@@ -125,6 +130,7 @@ public class CadastroServicoActivity extends AppCompatActivity {
                         public void onSuccess(String resposta) {
                             // Aqui você pode usar runOnUiThread() se precisar atualizar a UI
                             runOnUiThread(() -> {
+                                loadingOverlay.setVisibility(View.GONE);
                                 Toast.makeText(CadastroServicoActivity.this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
                                 // exibir resposta ou navegar
                                 setResult(RESULT_OK);
@@ -136,6 +142,7 @@ public class CadastroServicoActivity extends AppCompatActivity {
                         public void onFailure(Exception e) {
                             e.printStackTrace();
                             runOnUiThread(() -> {
+                                loadingOverlay.setVisibility(View.GONE);
                                 Toast.makeText(CadastroServicoActivity.this, "Erro ao cadastrar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             });
                         }

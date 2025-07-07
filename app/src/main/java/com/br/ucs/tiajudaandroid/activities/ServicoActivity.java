@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -30,6 +31,7 @@ public class ServicoActivity extends AppCompatActivity {
     private RecyclerView recyclerViewServicos;
     private ServicoAdapter servicoAdapter;
     private FloatingActionButton fabAdicionarServico;
+    private View loadingOverlay;
 
     // 1. A Activity só precisa conhecer o seu ViewModel.
     private ServicoViewModel servicoViewModel;
@@ -51,6 +53,7 @@ public class ServicoActivity extends AppCompatActivity {
 
         recyclerViewServicos = findViewById(R.id.recyclerViewServicos);
         fabAdicionarServico = findViewById(R.id.fabAdicionarServico);
+        loadingOverlay = findViewById(R.id.loadingOverlay);
         setupRecyclerView();
 
         // 2. INICIALIZAÇÃO CORRETA DO VIEWMODEL
@@ -65,6 +68,7 @@ public class ServicoActivity extends AppCompatActivity {
 
         // 4. INÍCIO DA BUSCA
         // Pede ao ViewModel para buscar os dados da primeira vez.
+        loadingOverlay.setVisibility(View.VISIBLE);
         servicoViewModel.fetchServicosFromApi();
     }
 
@@ -80,17 +84,24 @@ public class ServicoActivity extends AppCompatActivity {
         recyclerViewServicos.setAdapter(servicoAdapter);
 
         servicoAdapter.setOnEditarClickListener(servico -> {
-            // Aqui você trata a ação de edição, por exemplo:
-            // abrir uma nova Activity/Fragment para editar o serviço selecionado
             Intent intent = new Intent(ServicoActivity.this, CadastroServicoActivity.class);
     intent.putExtra("servico_id", servico.getId());
     intent.putExtra("servico_titulo", servico.getTitulo());
     intent.putExtra("servico_descricao", servico.getDescricao());
     cadastroServicoLauncher.launch(intent);
         });
+
+        servicoAdapter.setOnAvaliarClickListener(servico -> {
+            Intent intent = new Intent(ServicoActivity.this, AvaliacaoServicoActivity.class);
+            intent.putExtra("servico_id", servico.getId());
+            intent.putExtra("servico_titulo", servico.getTitulo());
+            startActivity(intent);
+        });
+        
     }
 
     private void setupCadastroLauncher() {
+        loadingOverlay.setVisibility(View.VISIBLE);
         cadastroServicoLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -100,6 +111,7 @@ public class ServicoActivity extends AppCompatActivity {
                         servicoViewModel.fetchServicosFromApi();
                     }
                 });
+                loadingOverlay.setVisibility(View.GONE);
 
         fabAdicionarServico.setOnClickListener(view -> {
             Intent intent = new Intent(ServicoActivity.this, CadastroServicoActivity.class);
@@ -111,6 +123,7 @@ public class ServicoActivity extends AppCompatActivity {
     private void observeViewModel() {
         // Observa a lista de serviços. Quando ela mudar, o código aqui dentro será executado.
         servicoViewModel.getServicos().observe(this, servicos -> {
+            loadingOverlay.setVisibility(View.GONE);
             if (servicos != null) {
                 // Entrega a nova lista para o adapter, que atualiza a UI.
                 servicoAdapter.setServicos(servicos);
@@ -119,6 +132,7 @@ public class ServicoActivity extends AppCompatActivity {
 
         // Observa possíveis mensagens de erro.
         servicoViewModel.getErro().observe(this, erro -> {
+            loadingOverlay.setVisibility(View.GONE);
             if (erro != null) {
                 Toast.makeText(this, erro, Toast.LENGTH_LONG).show();
             }

@@ -16,10 +16,12 @@ import android.widget.*;
 import com.google.android.material.textfield.TextInputEditText;
 
 
+
 public class CadastroActivity extends AppCompatActivity {
     EditText editNome, editEmail, editSenha;
     RadioGroup radioGroupTipo;
     Button btnCadastrar;
+    private View loadingOverlay;
     
     @Override
     protected void onCreate(Bundle b) {
@@ -39,6 +41,7 @@ public class CadastroActivity extends AppCompatActivity {
         editSenha = findViewById(R.id.editSenha);
         radioGroupTipo = findViewById(R.id.radioGroupTipo);
         btnCadastrar = findViewById(R.id.btnCadastrar);
+        loadingOverlay = findViewById(R.id.loadingOverlay);
 
         // Verifica se foi passado um usuário para edição
         
@@ -50,11 +53,12 @@ public class CadastroActivity extends AppCompatActivity {
                 editEmail.setText(usuarioExistente.getEmail());
                 editSenha.setText(usuarioExistente.getSenha());
 
-                if ("cliente".equals(usuarioExistente.getTipo())) {
-                    radioGroupTipo.check(R.id.radioCliente);
-                } else if ("tecnico".equals(usuarioExistente.getTipo())) {
-                    radioGroupTipo.check(R.id.radioTecnico);
-                }
+                // if ("cliente".equals(usuarioExistente.getTipo())) {
+                //     radioGroupTipo.check(R.id.radioCliente);
+                // } else if ("tecnico".equals(usuarioExistente.getTipo())) {
+                //     radioGroupTipo.check(R.id.radioTecnico);
+                // }
+                radioGroupTipo.setVisibility(View.GONE);
 
                 btnCadastrar.setText("Atualizar");
             }
@@ -66,12 +70,14 @@ public class CadastroActivity extends AppCompatActivity {
             String email = editEmail.getText().toString();
             String senha = editSenha.getText().toString();
 
+            loadingOverlay.setVisibility(View.VISIBLE);
+
             String tipo = "";
             int checkedId = radioGroupTipo.getCheckedRadioButtonId();
             if (checkedId == R.id.radioCliente) tipo = "cliente";
             else if (checkedId == R.id.radioTecnico) tipo = "tecnico";
 
-            if (nome.isEmpty() || email.isEmpty() || senha.isEmpty() || tipo.isEmpty()) {
+            if (nome.isEmpty() || email.isEmpty() || senha.isEmpty() || (tipo.isEmpty() && !sessionManager.isLoggedIn())) {
                 Toast.makeText(CadastroActivity.this, "Preencha todos os campos.", Toast.LENGTH_SHORT).show();
             } else {
 
@@ -83,6 +89,7 @@ public class CadastroActivity extends AppCompatActivity {
                     public void onSuccess(String resposta) {
                         // Aqui você pode usar runOnUiThread() se precisar atualizar a UI
                         runOnUiThread(() -> {
+                            loadingOverlay.setVisibility(View.GONE);
                             Toast.makeText(CadastroActivity.this, "Cadastro alterado com sucesso!", Toast.LENGTH_SHORT).show();
                             // exibir resposta ou navegar
                             finish();
@@ -93,6 +100,7 @@ public class CadastroActivity extends AppCompatActivity {
                     public void onFailure(Exception e) {
                         e.printStackTrace();
                         runOnUiThread(() -> {
+                            loadingOverlay.setVisibility(View.GONE);
                             Toast.makeText(CadastroActivity.this, "Erro ao editar cadastro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
                     }
@@ -106,6 +114,7 @@ public class CadastroActivity extends AppCompatActivity {
                     public void onSuccess(String resposta) {
                         // Aqui você pode usar runOnUiThread() se precisar atualizar a UI
                         runOnUiThread(() -> {
+                            loadingOverlay.setVisibility(View.GONE);
                             Toast.makeText(CadastroActivity.this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
                             // exibir resposta ou navegar
                             finish();
@@ -116,6 +125,7 @@ public class CadastroActivity extends AppCompatActivity {
                     public void onFailure(Exception e) {
                         e.printStackTrace();
                         runOnUiThread(() -> {
+                            loadingOverlay.setVisibility(View.GONE);
                             Toast.makeText(CadastroActivity.this, "Erro ao cadastrar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
                     }

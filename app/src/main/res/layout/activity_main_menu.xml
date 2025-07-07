@@ -11,6 +11,7 @@
         android:gravity="center_horizontal">
 
         <TextView
+            android:id="@+id/TextMainMenu"
             android:text="Bem-vindo ao Menu Principal"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -36,9 +37,25 @@
             android:id="@+id/btnConsultarOrcamentos"
             android:text="Orçamentos"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:layout_marginBottom="16dp" />
+            
+
+        <Button
+            android:id="@+id/btnAtenderServico"
+            android:text="Atendimento serviços"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:layout_marginBottom="16dp" />
+        <Button
+            android:id="@+id/btnAvaliarServico"
+            android:text="Avaliar serviço"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <Button
+        
+        
     android:id="@+id/btnSair"
     android:text="Sair"
     android:layout_width="match_parent"

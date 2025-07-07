@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity{
     EditText editEmail, editSenha;
     Button btnEntrar;
     TextView linkCadastro;
+    private View loadingOverlay;
 
     protected void onCreate(Bundle b){
         super.onCreate(b);
@@ -32,18 +33,23 @@ public class LoginActivity extends AppCompatActivity{
         editSenha = findViewById(R.id.senhaLogin);
         btnEntrar = findViewById(R.id.btnEntrar);
         linkCadastro = findViewById(R.id.linkCadastro);
+        loadingOverlay = findViewById(R.id.loadingOverlay);
 
+        
         btnEntrar.setOnClickListener(v -> {
             String email = editEmail.getText().toString();
             String senha = editSenha.getText().toString();
+
+            loadingOverlay.setVisibility(View.VISIBLE);
 
             UserData.validarLogin(email, senha,     
             new DataCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
                     // Aqui você pode usar runOnUiThread() se precisar atualizar a UI
+                    
                     runOnUiThread(() -> {
-
+                        loadingOverlay.setVisibility(View.GONE);
                         // 1. Converte a resposta JSON para o nosso objeto LoginResponse
                         Gson gson = new Gson();
                         LoginResponse response = gson.fromJson(result, LoginResponse.class);
@@ -70,6 +76,7 @@ public class LoginActivity extends AppCompatActivity{
                 public void onFailure(Exception e) {
                     e.printStackTrace();
                     runOnUiThread(() -> {
+                        loadingOverlay.setVisibility(View.GONE);
                         new AlertDialog.Builder(LoginActivity.this)
         .setTitle("Erro ao logar")
         .setMessage(e.getMessage())

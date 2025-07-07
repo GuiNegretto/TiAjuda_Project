@@ -56,6 +56,23 @@
     android:name=".activities.CadastroOrcamentoActivity"
     android:exported="false" />
 
+        		<activity
+    android:name=".activities.AvaliacaoServicoActivity"
+    android:exported="false" />
+
+        		<activity
+    android:name=".activities.AtendimentoServicoActivity"
+    android:exported="false" />
+    
+        		<activity
+    android:name=".activities.AprovarOrcamentoActivity"
+    android:exported="false" />
+    
+        		<activity
+    android:name=".activities.DetalheAtendimentoActivity"
+    android:exported="false" />
+    
+
     </application>
 
 </manifest>

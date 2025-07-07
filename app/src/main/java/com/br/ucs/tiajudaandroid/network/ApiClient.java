@@ -20,7 +20,7 @@ public class ApiClient {
     private final OkHttpClient client = new OkHttpClient();
     private final Gson gson = new Gson();
     public static final MediaType JSON = MediaType.get("application/json");
-    private static final String BASE_URL = "http://172.25.100.9:3000/"; // <-- COLOQUE A URL BASE DA SUA API AQUI
+    private static final String BASE_URL = "https://tiajuda-api-nodejs.onrender.com/"; // <-- COLOQUE A URL BASE DA SUA API AQUI
 
 
     public interface LoginCallback {
