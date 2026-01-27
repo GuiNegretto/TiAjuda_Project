@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_editar_cadastro"
+        android:title="Editar Cadastro" />
+    <item
+        android:id="@+id/menu_nova_solicitacao"
+        android:title="Nova Solicitação" />
+    <item
+        android:id="@+id/menu_consultar_orcamentos"
+        android:title="Consultar Orçamentos" />
+</menu>

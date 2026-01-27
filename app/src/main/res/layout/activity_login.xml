@@ -1,36 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frameRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/emailLogin"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
+    <!-- Seu layout atual inteiro vai aqui -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="24dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:gravity="top|center_horizontal">
 
-    <EditText
-        android:id="@+id/senhaLogin"
-        android:hint="Senha"
-        android:inputType="textPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <!-- Banner da Logo (preenchendo 100% da largura da tela) -->
+        <ImageView
+            android:id="@+id/logo"
+            android:src="@drawable/logo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="-24dp"
+            android:layout_marginEnd="-24dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Logo"
+            android:scaleType="fitCenter" />
 
-    <Button
-        android:id="@+id/btnEntrar"
-        android:text="Entrar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <!-- Texto Login -->
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:text="Login"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/linkCadastro"
-        android:text="Não tem conta? Cadastre-se"
-        android:textColor="#0000FF"
-        android:paddingTop="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+        <!-- Campo Email -->
+        <EditText
+            android:id="@+id/emailLogin"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Campo Senha -->
+        <EditText
+            android:id="@+id/senhaLogin"
+            android:hint="Senha"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Botão Entrar -->
+        <Button
+            android:id="@+id/btnEntrar"
+            android:text="Entrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Link para Cadastro -->
+        <TextView
+            android:id="@+id/linkCadastro"
+            android:text="Não tem conta? Cadastre-se"
+            android:paddingTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- Overlay de loading no topo do FrameLayout -->
+    <include layout="@layout/loading_overlay" />
+
+</FrameLayout>

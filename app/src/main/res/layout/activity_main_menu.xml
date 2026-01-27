@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/TextMainMenu"
+            android:text="Bem-vindo ao Menu Principal"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnEditarCadastro"
+            android:text="Editar seu cadastro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnNovaSolicitacao"
+            android:text="Solicitações de serviço"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnConsultarOrcamentos"
+            android:text="Orçamentos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:layout_marginBottom="16dp" />
+            
+
+        <Button
+            android:id="@+id/btnAtenderServico"
+            android:text="Atendimento serviços"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:layout_marginBottom="16dp" />
+        <Button
+            android:id="@+id/btnAvaliarServico"
+            android:text="Avaliar serviço"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+        
+        
+    android:id="@+id/btnSair"
+    android:text="Sair"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="32dp"
+    android:backgroundTint="@android:color/holo_red_light"
+    android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+</ScrollView>
